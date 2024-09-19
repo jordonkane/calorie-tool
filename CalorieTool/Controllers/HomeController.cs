@@ -1,32 +1,26 @@
-﻿using CalorieTool.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace CalorieTool.Controllers
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    [HttpGet]
+    public IActionResult Index()
     {
-        private readonly ILogger<HomeController> _logger;
+        return View();
+    }
 
-        public HomeController(ILogger<HomeController> logger)
+    [HttpPost]
+    public IActionResult Index(CalorieModel model)
+    {
+        if (ModelState.IsValid)
         {
-            _logger = logger;
+            // Perform calorie calculation
+            model.CalculateCalories();
+
+            // Pass the model with calculated values back to the view
+            return View(model);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        // If the model is invalid, return the same view with error messages
+        return View(model);
     }
 }
