@@ -9,10 +9,10 @@ public class CalorieModel
     public string Sex { get; set; }
 
     [Required]
-    public double Weight { get; set; }
+    public double Weight { get; set; } // Weight should be a valid number
 
     [Required]
-    public int Height { get; set; }
+    public int Height { get; set; } // Height should be in inches
 
     [Required]
     public string ActivityLevel { get; set; }
@@ -25,6 +25,17 @@ public class CalorieModel
     // Method to calculate BMR and calorie expenditure
     public void CalculateCalories()
     {
+        // Ensure that weight, height, and age are not 0
+        if (Weight <= 0 || Height <= 0 || Age <= 0)
+        {
+            BMR = 0;
+            CaloriesToMaintain = 0;
+            CaloriesToGain = 0;
+            CaloriesToLose = 0;
+            return;
+        }
+
+        // Calculate BMR based on gender
         if (Sex == "male")
         {
             BMR = ((10 * Weight / 2.2) + (6.25 * Height / 0.393701) - (5 * Age) + 5);
@@ -34,6 +45,7 @@ public class CalorieModel
             BMR = ((10 * Weight / 2.2) + (6.25 * Height / 0.393701) - (5 * Age) - 161);
         }
 
+        // Calculate daily caloric expenditure based on activity level
         switch (ActivityLevel)
         {
             case "sedentary":
@@ -56,6 +68,7 @@ public class CalorieModel
                 break;
         }
 
+        // Calculate values for gaining and losing weight
         CaloriesToGain = CaloriesToMaintain + 500;
         CaloriesToLose = CaloriesToMaintain - 500;
     }
