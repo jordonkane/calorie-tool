@@ -1,8 +1,104 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model CalorieModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Expenditure Tool</title>
+</head>
+<body>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <h2>Calorie Expenditure Tool</h2>
+
+    <form method="post">
+        <label for="age">Age</label>
+        <input id='age' name="Age" type="number" value="@Model?.Age"><br>
+        <span asp-validation-for="Age" class="text-danger"></span><br>
+
+        <input type="radio" name="Sex" value="male" checked="@(Model?.Sex == "male")"> Male
+        <input type="radio" name="Sex" value="female" @(Model?.Sex == "female" ? "checked" : "")> Female<br>
+
+        <label for="weight">Weight</label>
+        <input id='weight' name="Weight" type="number" placeholder="in pounds" value="@Model?.Weight"><br>
+        <span asp-validation-for="Weight" class="text-danger"></span><br>
+
+        <label for="height">Height</label>
+        <select id="height" name="Height">
+            @for (int i = 37; i <= 71; i++)
+            {
+                if (Model?.Height == i)
+                {
+                    <option value="@i" selected>@(i / 12)ft @(i % 12)in</option>
+                }
+                else
+                {
+                    <option value="@i">@(i / 12)ft @(i % 12)in</option>
+                }
+            }
+        </select>
+        <br>
+
+        <label for="activity">Activity level</label>
+        <select id="activity" name="ActivityLevel">
+            @if (Model?.ActivityLevel == "sedentary")
+            {
+                <option value="sedentary" selected>Sedentary (office job)</option>
+            }
+            else
+            {
+                <option value="sedentary">Sedentary (office job)</option>
+            }
+
+            @if (Model?.ActivityLevel == "light")
+            {
+                <option value="light" selected>Light (1-2 days/week)</option>
+            }
+            else
+            {
+                <option value="light">Light (1-2 days/week)</option>
+            }
+
+            @if (Model?.ActivityLevel == "moderate")
+            {
+                <option value="moderate" selected>Moderate (3-5 days/week)</option>
+            }
+            else
+            {
+                <option value="moderate">Moderate (3-5 days/week)</option>
+            }
+
+            @if (Model?.ActivityLevel == "heavy")
+            {
+                <option value="heavy" selected>Heavy (6-7 days/week)</option>
+            }
+            else
+            {
+                <option value="heavy">Heavy (6-7 days/week)</option>
+            }
+
+            @if (Model?.ActivityLevel == "intense")
+            {
+                <option value="intense" selected>Intense (2x/day)</option>
+            }
+            else
+            {
+                <option value="intense">Intense (2x/day)</option>
+            }
+        </select>
+        <br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    @if (Model != null)
+    {
+        <h4>Your caloric expenditure is:</h4>
+        <p>@Model.CaloriesToMaintain.ToString("F0") cals/day</p>
+        <p>Eat <u>@Model.CaloriesToGain.ToString("F0")</u> cals/day to <i>gain weight</i></p>
+        <p>Eat <u>@Model.CaloriesToLose.ToString("F0")</u> cals/day to <i>lose weight</i></p>
+    }
+
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+</body>
+</html>
