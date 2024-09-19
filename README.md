@@ -1,8 +1,9 @@
-# Calorie Expenditure Fitness Tool - Web Application 🎹
+# Calorie Expenditure Fitness Tool - Web Application 🍔
 
 #### Requirements:
 1. `.NET Core 7`
-2. `Visual Studio`
+2. `ASP.NET Core MVC`
+3. `Visual Studio`
 
 #### Nuget Packages:
 1. `xunit` v2.6.2
