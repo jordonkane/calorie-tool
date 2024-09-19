@@ -5,100 +5,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calorie Expenditure Tool</title>
+    <!-- Bootstrap CSS -->
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-dark text-white">
 
-    <h2>Calorie Expenditure Tool</h2>
+    <div class="container mt-5">
+        <div class="card bg-dark text-white shadow-lg">
+            <div class="card-header">
+                <h2 class="text-center">Calorie Expenditure Tool</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group mb-3">
+                        <label for="age">Age</label>
+                        <input id="age" name="Age" type="number" class="form-control" value="@Model?.Age">
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
 
-    <form method="post">
-        <label for="age">Age</label>
-        <input id='age' name="Age" type="number" value="@Model?.Age"><br>
-        <span asp-validation-for="Age" class="text-danger"></span><br>
+                    <div class="form-group mb-3">
+                        <label>Sex</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="Sex" value="male" checked="@(Model?.Sex == "male")">
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="Sex" value="female" @(Model?.Sex == "female" ? "checked" : "")>
+                            <label class="form-check-label">Female</label>
+                        </div>
+                    </div>
 
-        <input type="radio" name="Sex" value="male" checked="@(Model?.Sex == "male")"> Male
-        <input type="radio" name="Sex" value="female" @(Model?.Sex == "female" ? "checked" : "")> Female<br>
+                    <div class="form-group mb-3">
+                        <label for="weight">Weight (in pounds)</label>
+                        <input id="weight" name="Weight" type="number" class="form-control" value="@Model?.Weight">
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
 
-        <label for="weight">Weight</label>
-        <input id='weight' name="Weight" type="number" placeholder="in pounds" value="@Model?.Weight"><br>
-        <span asp-validation-for="Weight" class="text-danger"></span><br>
+                    <div class="form-group mb-3">
+                        <label for="height">Height</label>
+                        <select id="height" name="Height" class="form-select">
+                            @for (int i = 37; i <= 71; i++)
+                            {
+                                if (Model?.Height == i)
+                                {
+                                    <option value="@i" selected>@(i / 12)ft @(i % 12)in</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@((i / 12))ft @(i % 12)in</option>
+                                }
+                            }
+                        </select>
+                    </div>
 
-        <label for="height">Height</label>
-        <select id="height" name="Height">
-            @for (int i = 37; i <= 71; i++)
-            {
-                if (Model?.Height == i)
+                    <div class="form-group mb-3">
+                        <label for="activity">Activity Level</label>
+                        <select id="activity" name="ActivityLevel" class="form-select">
+                            @if (Model?.ActivityLevel == "sedentary")
+                            {
+                                <option value="sedentary" selected>Sedentary (office job)</option>
+                            }
+                            else
+                            {
+                                <option value="sedentary">Sedentary (office job)</option>
+                            }
+
+                            @if (Model?.ActivityLevel == "light")
+                            {
+                                <option value="light" selected>Light (1-2 days/week)</option>
+                            }
+                            else
+                            {
+                                <option value="light">Light (1-2 days/week)</option>
+                            }
+
+                            @if (Model?.ActivityLevel == "moderate")
+                            {
+                                <option value="moderate" selected>Moderate (3-5 days/week)</option>
+                            }
+                            else
+                            {
+                                <option value="moderate">Moderate (3-5 days/week)</option>
+                            }
+
+                            @if (Model?.ActivityLevel == "heavy")
+                            {
+                                <option value="heavy" selected>Heavy (6-7 days/week)</option>
+                            }
+                            else
+                            {
+                                <option value="heavy">Heavy (6-7 days/week)</option>
+                            }
+
+                            @if (Model?.ActivityLevel == "intense")
+                            {
+                                <option value="intense" selected>Intense (2x/day)</option>
+                            }
+                            else
+                            {
+                                <option value="intense">Intense (2x/day)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    </div>
+                </form>
+
+                @if (Model != null)
                 {
-                    <option value="@i" selected>@(i / 12)ft @(i % 12)in</option>
+                    <div class="mt-4">
+                        <h4>Your caloric expenditure is:</h4>
+                        <p class="lead">@Model.CaloriesToMaintain.ToString("F0") cals/day</p>
+                        <p>Eat <u>@Model.CaloriesToGain.ToString("F0")</u> cals/day to <i>gain weight</i></p>
+                        <p>Eat <u>@Model.CaloriesToLose.ToString("F0")</u> cals/day to <i>lose weight</i></p>
+                    </div>
                 }
-                else
-                {
-                    <option value="@i">@(i / 12)ft @(i % 12)in</option>
-                }
-            }
-        </select>
-        <br>
+            </div>
+        </div>
+    </div>
 
-        <label for="activity">Activity level</label>
-        <select id="activity" name="ActivityLevel">
-            @if (Model?.ActivityLevel == "sedentary")
-            {
-                <option value="sedentary" selected>Sedentary (office job)</option>
-            }
-            else
-            {
-                <option value="sedentary">Sedentary (office job)</option>
-            }
-
-            @if (Model?.ActivityLevel == "light")
-            {
-                <option value="light" selected>Light (1-2 days/week)</option>
-            }
-            else
-            {
-                <option value="light">Light (1-2 days/week)</option>
-            }
-
-            @if (Model?.ActivityLevel == "moderate")
-            {
-                <option value="moderate" selected>Moderate (3-5 days/week)</option>
-            }
-            else
-            {
-                <option value="moderate">Moderate (3-5 days/week)</option>
-            }
-
-            @if (Model?.ActivityLevel == "heavy")
-            {
-                <option value="heavy" selected>Heavy (6-7 days/week)</option>
-            }
-            else
-            {
-                <option value="heavy">Heavy (6-7 days/week)</option>
-            }
-
-            @if (Model?.ActivityLevel == "intense")
-            {
-                <option value="intense" selected>Intense (2x/day)</option>
-            }
-            else
-            {
-                <option value="intense">Intense (2x/day)</option>
-            }
-        </select>
-        <br>
-
-        <button type="submit">Submit</button>
-    </form>
-
-    @if (Model != null)
-    {
-        <h4>Your caloric expenditure is:</h4>
-        <p>@Model.CaloriesToMaintain.ToString("F0") cals/day</p>
-        <p>Eat <u>@Model.CaloriesToGain.ToString("F0")</u> cals/day to <i>gain weight</i></p>
-        <p>Eat <u>@Model.CaloriesToLose.ToString("F0")</u> cals/day to <i>lose weight</i></p>
-    }
-
+    <!-- Bootstrap JS and dependencies -->
     <script src="~/lib/jquery/jquery.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
