@@ -15,7 +15,8 @@
 3. Run the project within the `Visual Studio 2022` IDE.
 
 # Screenshots 📷
-![image](https://github.com/user-attachments/assets/003cabdf-1f93-4079-aab9-482913a6c8d7)
+![image](https://github.com/user-attachments/assets/a8df71d8-300f-479d-8b9a-86127ee6bf70)
+
 
 Successful build:
 ![image](https://github.com/user-attachments/assets/5a90f129-4a85-43be-b31d-887234e8e7d7)
